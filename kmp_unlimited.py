@@ -7,7 +7,7 @@ def classicStrMatching(patternStr:str):
     return [funcDict[c] for c in patternStr]
 
 class kmp_unlimited:
-    # classic KMP matching algorithm applied to a unlimited sequence
+    # classic KMP matching algorithm applied to an unlimited sequence
     _window: deque  # fixed length queue used as a window, use method: append(), popleft()
     _next: list     # next array
     _needle = None  # pattern array
