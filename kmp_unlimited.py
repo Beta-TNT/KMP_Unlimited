@@ -11,11 +11,12 @@ class kmp_unlimited:
     _window: deque  # a queue with maxlen equals to the length of pattern, used as a window, the way I use it: append() / popleft()
     _next: list     # NEXT array
     _pattern = None # pattern array
+    _overlap = True # overlap mode
     _l = 0          # pattern length
     _i = 0          # classic pointer i
     _j = 0          # classic pointer j
 
-    def __init__(self, pattern):
+    def __init__(self, pattern, overlap=True):
         def getNext(pattern): # classic NEXT array calculating function.
             i, j, l = 2, 0, len(pattern)
             next = [0] * l
@@ -28,6 +29,7 @@ class kmp_unlimited:
                 i += 1
             return next
         self._pattern = pattern
+        self._overlap = overlap
         self._next = getNext(pattern)
         self._l = len(pattern)
         self._window = deque(maxlen=self._l)
@@ -46,7 +48,10 @@ class kmp_unlimited:
                     self._j = self._next[i]
                     return None
             self._j = 0 # reset j pointer
-            return self._i - self._l, list(self._window)
+            rtnContent = list(self._window)
+            if not self._overlap: # overlap or not
+                self._window.clear()
+            return self._i - self._l, rtnContent
 
 def standardKmp(haystack: str, needle: str) -> int:
     if needle == "":
